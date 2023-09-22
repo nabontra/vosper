@@ -6,11 +6,11 @@
 import os, pyaudio, whisper, recorder
 from vosk import SetLogLevel, Model, KaldiRecognizer
 SetLogLevel(-1) # mutes vosk verbosity
-os.system('clear')
+os.system('cls')
 welcome_msg = '''\ \ / / _ \/ __| '_ \ / _ \ '__|
- \ V / (_) \__ \ |_) |  __/ |   
-  \_/ \___/|___/ .__/ \___|_|   
-               |_|  
+ \ V / (_) \__ \ |_) |  __/ |
+  \_/ \___/|___/ .__/ \___|_|
+               |_|
                      by appvoid
 '''
 
@@ -30,23 +30,23 @@ class new:
         mic = pyaudio.PyAudio()
         # microphone streaming
 
-        '''this code is setting up an audio stream that 
-        will capture mono audio at a sample rate of 16000 Hz 
-        with 16-bit integer samples. It will capture audio 
+        '''this code is setting up an audio stream that
+        will capture mono audio at a sample rate of 16000 Hz
+        with 16-bit integer samples. It will capture audio
         in chunks of 4096 samples at a time.'''
 
         _stream = mic.open(
             channels=1,
             rate=16000,
             input=True,
-            format=pyaudio.paInt16, 
+            format=pyaudio.paInt16,
             frames_per_buffer=4096
         )
         _stream.start_stream()
-        os.system('clear')
+        os.system('cls')
         return _stream
 
-    def __init__(self, vosk_model='small', whisper_model='small.en', waiting_time=4, filename='speaker', verbosity=True):
+    def __init__(self, vosk_model='small', whisper_model='medium.en', waiting_time=3, filename='speaker', verbosity=True):
         self.verbosity = verbosity
         log('- loading models...', self.verbosity)
         self.recorder = recorder.new(waiting_time, filename='speaker')
@@ -71,7 +71,7 @@ class new:
             # we also check if the input does worth the whisper gpu compute
             characters_threshold = 3
             if (len(text) > characters_threshold):
-                text = self.whisper.transcribe(f'{self.filename}.wav')['text'].strip()
+                text = self.whisper.transcribe(f'{self.filename}.wav', fp16=False)['text'].strip()
             # we turn off whisper recognition variable
             self.recording_whisper = False
 
@@ -83,10 +83,10 @@ class new:
                 self.recording_whisper = True
                 # we save 5 seconds of audio for whisper to transcribe
                 self.recorder.record(5)
-        
-        # it's a simple but quite unbreakable spell 
+
+        # it's a simple but quite unbreakable spell
         # for text checking to avoid printing empty strings
         if text != '-' and text != '- ':
-            return text 
+            return text
         else:
             return ''

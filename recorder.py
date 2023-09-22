@@ -19,10 +19,10 @@ class new:
     def save (self):
         # save the new file
         write(f'{self.filename}.wav',44100,self.recording)
-    
+
     def stop(self):
         # remove file so previous data doesn't get mixed up
-        cmd(f'rm {self.filename}.wav >/dev/null 2>&1')
+        cmd(f'rm {self.filename}.wav >nul 2>&1')
         # stop recording
         sd.stop()
         # finally, we save the file
